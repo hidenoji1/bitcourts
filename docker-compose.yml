@@ -1,0 +1,42 @@
+version: '3'
+services:
+  mysql:
+    container_name: "mysql"
+    build: ./mysql
+    command: --default-authentication-plugin=mysql_native_password --sort_buffer_size=1073741824
+    volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/db:/var/lib/mysql
+    expose:
+      - '3306'
+    ports:
+      - "3306:3306"
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - app-net
+    
+  python:
+    container_name: "python"
+    build: ./python
+    working_dir: '/home/scrapy'
+    volumes:
+      - ./python/scrapy:/home/scrapy
+    expose:
+      - '6023'
+    ports:
+      - "6023:6023"
+    networks:
+      - app-net
+    depends_on:
+      - mysql
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+      
+networks:
+  app-net:
+    driver: bridge
+      
+      
