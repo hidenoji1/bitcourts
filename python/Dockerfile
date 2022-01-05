@@ -19,6 +19,7 @@ RUN pip install --upgrade pip && \
     pip install mysqlclient && \
     pip install twisted && \
     pip install scrapy==2.3.0 && \
+    pip install scrapy_splash && \
     pip install japanera && \
     pip install mojimoji 
 
